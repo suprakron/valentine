@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine Surprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                        url('/img/bg.jpg') no-repeat center/cover;
+            overflow: hidden;
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .message {
+            font-size: 5vw;
+            color: #ff1493;
+            font-weight: bold;
+            margin-bottom: 5vw;
+            padding: 3vw 6vw;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            animation: glow 2s infinite alternate;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 15px #ff69b4; }
+            100% { box-shadow: 0 0 25px #ff1493; }
+        }
+
+        .envelope {
+            width: 40vw;
+            max-width: 200px;
+            height: 28vw;
+            max-height: 140px;
+            background: url('/img/messges.png') no-repeat center/cover;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            animation: bounce 1.5s infinite ease-in-out;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .envelope:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .flowers {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+        }
+
+        .flower {
+            position: absolute;
+            width: 8vw;
+            max-width: 50px;
+            height: 8vw;
+            max-height: 50px;
+            background: url('https://cdn.pixabay.com/photo/2016/08/28/23/18/sunflower-1627179_640.jpg') no-repeat center/cover;
+            animation: float 4s ease-out;
+            opacity: 0;
+            transform: rotate(0deg);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg) scale(0.6); opacity: 1; }
+            50% { opacity: 0.7; transform: rotate(180deg); }
+            100% { transform: translateY(-500px) rotate(360deg) scale(1.2); opacity: 0; }
+        }
+
+        .valentine-text {
+            position: absolute;
+            font-size: 6vw;
+            max-size: 48px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            animation: textFloat 2.5s ease-out;
+            left: 50%;
+            top: 60%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        @keyframes textFloat {
+            0% { transform: translate(-50%, -50%) translateY(0px); opacity: 1; }
+            100% { transform: translate(-50%, -50%) translateY(-300px); opacity: 0; }
+        }
+
+        /* รองรับ iPhone SE และจอเล็ก */
+        @media (max-width: 375px) {
+            .message { font-size: 6vw; }
+            .envelope { width: 50vw; height: 35vw; }
+            .valentine-text { font-size: 7vw; }
+        }
+
+        /* รองรับ iPhone 13, 14, 15 */
+        @media (max-width: 430px) {
+            .message { font-size: 5vw; }
+            .envelope { width: 45vw; height: 30vw; }
+            .valentine-text { font-size: 6.5vw; }
+        }
+
+        /* รองรับ iPhone Pro Max */
+        @media (max-width: 500px) {
+            .message { font-size: 4.5vw; }
+            .envelope { width: 40vw; height: 28vw; }
+            .valentine-text { font-size: 6vw; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="message">Happy Valentine's Day! Click the envelope to reveal a surprise! 💖</div>
+    <!-- <div class="envelope" onclick="releaseFlowers()"></div> -->
+    <div class="envelope" onclick="releaseFlowers(event)"></div>
+    <div class="flowers"></div>
+
+    <script>
+        function releaseFlowers() {
+            if (event) event.preventDefault();
+            for (let i = 0; i < 30; i++) {
+                let flower = document.createElement('div');
+                flower.classList.add('flower');
+                flower.style.left = Math.random() * window.innerWidth + 'px';
+                flower.style.top = Math.random() * window.innerHeight + 'px';
+                flower.style.animationDelay = Math.random() * 3 + 's';
+                document.querySelector('.flowers').appendChild(flower);
+                setTimeout(() => flower.remove(), 4000);
+            }
+            
+            let text = document.createElement('div');
+            text.classList.add('valentine-text');
+            text.innerHTML = '💖 Happy Valentine! 💖';
+            document.body.appendChild(text);
+            setTimeout(() => text.remove(), 3000);
+
+            // เอฟเฟกต์เปิดซองจดหมาย
+            let envelope = document.querySelector('.envelope');
+            envelope.style.transform = 'rotateX(120deg)';
+            setTimeout(() => envelope.style.transform = 'rotateX(0deg)', 2000);
+        }
+    </script>
+</body>
+</html>
